@@ -1,0 +1,30 @@
+target/
+logs/
+auth/auth-starter/http/http-client.env.json
+
+### eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+*/debug.log
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+bin/
+doc/
+.DS_Store
+/logs/

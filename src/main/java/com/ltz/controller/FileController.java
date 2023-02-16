@@ -17,7 +17,11 @@ import java.util.List;
 
 @Controller
 public class FileController {
-    @RequestMapping({"/"})
+
+    private static String UPLOAD_PATH = "./";
+
+
+    @RequestMapping("/")
     public String file(Model model) {
         File file = new File("./");
         File[] files = file.listFiles();
@@ -30,7 +34,7 @@ public class FileController {
         return "index";
     }
 
-    @RequestMapping({"/download/{fileName}"})
+    @RequestMapping("/download/{fileName}")
     public String downLoad(Model model, HttpServletResponse response, @PathVariable("fileName") String fileName) {
         File file = new File("./" + fileName);
         if (!file.exists()) {
@@ -51,14 +55,15 @@ public class FileController {
                         os.write(buff, 0, i);
                         os.flush();
                     }
-                } catch (Throwable var10) {
+                    os.close();
+                } catch (Throwable throwable) {
                     try {
                         bis.close();
                     } catch (Throwable var9) {
-                        var10.addSuppressed(var9);
+                        throwable.addSuppressed(var9);
                     }
 
-                    throw var10;
+                    throw throwable;
                 }
 
                 bis.close();
@@ -72,28 +77,27 @@ public class FileController {
         }
     }
 
-    @RequestMapping({"/upload"})
+    @RequestMapping("/upload")
     public String upLoad(Model model, @RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             model.addAttribute("msg", "还未选择任何文件");
             return "/index";
         } else {
             String name = file.getOriginalFilename();
-            String upLoadPath = "./";
-            new File(upLoadPath + name);
 
             try {
-                FileOutputStream fos = new FileOutputStream(upLoadPath + name);
+                FileOutputStream fos = new FileOutputStream(UPLOAD_PATH + name);
                 fos.write(file.getBytes());
                 fos.close();
                 System.out.println(file.getOriginalFilename() + "上传成功");
-            } catch (IOException var7) {
+            } catch (IOException e) {
                 System.out.println(file.getOriginalFilename() + "保存失败");
-                var7.printStackTrace();
+                e.printStackTrace();
             }
 
             model.addAttribute("msg", "上传成功");
             return "redirect:/";
         }
     }
+
 }

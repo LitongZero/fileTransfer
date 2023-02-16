@@ -31,3 +31,7 @@ mvn clean package
 ```cmd
 java -jar fileTransfer-1.0.0.jar
 ```
+
+然后打开http://ip:8080
+
+![示例图片](images/index.png)
